@@ -4,11 +4,11 @@
  */
 
 var express = require('express'),
-  engine = require('ejs-locals'),
   routes = require('./routes'),
   api = require('./routes/api'),
   http = require('http'),
   path = require('path');
+
 
 var app = module.exports = express();
 
@@ -17,13 +17,12 @@ var app = module.exports = express();
  * Configuration
  */
 
-app.engine('ejs', engine);
-
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
+app.set('view engine', 'jade');
 app.use(express.logger('dev'));
+app.use(require("connect-assets")());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'app')));
