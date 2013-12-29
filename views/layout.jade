@@ -5,8 +5,13 @@ html(ng-app="qwerGame")
     base(href='/')
     title QWER The Game Game
     != css('style')
-    script(src="/js/vendor/angular.min.js")
+    != js('vendor/angular.min')
+    //- script(src="/js/vendor/angular.min.js")
+    != js('app')
+    
   body
+    include header
+    
     block body
 
     include footer

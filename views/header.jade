@@ -1,0 +1,5 @@
+div.header
+  div.nav-bar(ng-controller="mainNav")
+    div.nav-button(ng-repeat="menuItem in menuItems")
+      div(class="{{menuItem.class}}")
+        | {{menuItem.text}}

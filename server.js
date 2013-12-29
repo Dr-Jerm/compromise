@@ -9,6 +9,7 @@ var express = require('express'),
   http = require('http'),
   path = require('path');
 
+var util = require('util');
 
 var app = module.exports = express();
 
@@ -23,10 +24,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.logger('dev'));
 app.use(require("connect-assets")());
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.static(path.join(__dirname, 'app')));
-app.use(app.router);
+// app.use(express.bodyParser());
+// app.use(express.methodOverride());
+app.use(express.static(path.join(__dirname, 'assets')));
+// app.use(app.router);
 
 // development only
 if (app.get('env') === 'development') {
@@ -45,13 +46,13 @@ if (app.get('env') === 'production') {
 
 // serve index and view partials
 app.get('/', routes.index);
-// app.get('/partials/:name', routes.partials);
+app.get('/partials/:name', routes.partials);
 
 // JSON API
 // app.get('/api/name', api.name);
 
 // redirect all others to the index (HTML5 history)
-app.get('*', routes.index);
+// app.get('*', routes.index);
 
 
 /**
