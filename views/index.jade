@@ -1,5 +1,5 @@
 extends layout
 
 block body
-  div.game-body(ng-controller='dotaGame')
-    key-square(key-code="36")
+  div.game-body(ng-controller='dotaGame' keypress)
+    key-square(ng-keyup="userKeyPress(key)" ng-repeat="key in keys" key="key")

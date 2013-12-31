@@ -2,9 +2,11 @@
 http://dev.dota2.com/showthread.php?t=72063&p=510746&viewfull=1#post510746
 ###
 
+root = exports ? this
+
 (->
-  qwer = angular.module("qwerGame", [])
-  qwer.controller "mainNav", ($scope) ->
+  root.qwer = angular.module("qwerGame", [])
+  root.qwer.controller "mainNav", ($scope) ->
 
     $scope.menuItems = [
       {
@@ -17,18 +19,11 @@ http://dev.dota2.com/showthread.php?t=72063&p=510746&viewfull=1#post510746
       }
     ]
 
-  qwer.controller "dotaGame", ($scope) ->
+  root.qwer.controller "dotaGame", ($scope) ->
     $scope.keys = ['q', 'w', 'e', 'r'];
 
-  qwer.directive 'keySquare', () ->
-    restrict: 'E'
-    templateUrl: 'partials/keySquare'
-    scope: 
-      keyCode: '='
-    
-    link: (scope, element, attrs) ->
-      debugger 
-    
+    $scope.userKeyPress = (keyCode) ->
+      console.log keyCode
 
   console.log "Up and Running!"
 )()
