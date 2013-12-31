@@ -1,29 +1,14 @@
-###
-http://dev.dota2.com/showthread.php?t=72063&p=510746&viewfull=1#post510746
-###
 
 root = exports ? this
 
 (->
-  root.qwer = angular.module("qwerGame", [])
-  root.qwer.controller "mainNav", ($scope) ->
+  root.app = angular.module("myApp", [])
+  root.app.controller "mainController", ($scope) ->
 
-    $scope.menuItems = [
-      {
-        class: 'home'
-        text: 'Home'
-      }
-      {
-        class: 'other'
-        text: 'Other'
-      }
-    ]
+    $scope.test = "scope Variable" 
 
-  root.qwer.controller "dotaGame", ($scope) ->
-    $scope.keys = ['q', 'w', 'e', 'r'];
-
-    $scope.userKeyPress = (keyCode) ->
-      console.log keyCode
+  root.app.controller "anotherController", ($scope) ->
+    $scope.foo = ['another', 'scope', 'variable'];
 
   console.log "Up and Running!"
 )()

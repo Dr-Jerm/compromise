@@ -1,21 +1,14 @@
 root = exports ? this
 
-root.qwer.directive "keypress", ($document) ->
+root.app.directive "keypress", ($document) ->
   (scope, element, attrs) ->
     $document.bind "keypress", (e) ->
       charCode = e.charCode
-      scope.userKeyPress charCode
+      console.log charCode
 
-root.qwer.directive 'keySquare', () ->
+root.app.directive 'partialTest', () ->
   restrict: 'E'
-  templateUrl: 'partials/keySquare'
-  scope: 
-    key: '='
-  
+  templateUrl: 'partials/partial1'
   link: (scope, element, attrs) ->
-    keyCode = scope.key.charCodeAt(0)
-
-    scope.userKeyPress = (keyCode) ->
-      console.log keyCode+" dir"
-    # debugger 
+    console.log('partial loaded!')
   
