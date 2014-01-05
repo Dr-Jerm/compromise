@@ -29,4 +29,4 @@ describe 'anotherController', ->
         expect(scope).toBeDefined()
 
     it 'should have more scope variables defined', ->
-        expect(scope.foo).toBe(['another', 'scope', 'variable'])
+        expect(scope.foo.toString).toBe(['another', 'scope', 'variable'].toString)
