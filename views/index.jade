@@ -1,7 +1,10 @@
 extends layout
 
 block body
-  div.body(ng-controller='anotherController' keypress)
-    partial-test
-    div(ng-repeat="item in foo")
-      {{item}}
+  div.body(ng-controller='canvasController')
+    {{test}}
+    div(ng-click="debug()") Debug
+    input#top(type="text" ng-model="triangle.topText")
+    input#left(type="text" ng-model="triangle.leftText")
+    input#right(type="text" ng-model="triangle.rightText")
+    canvas#compromise
