@@ -11,12 +11,40 @@ body
   .header
     width 100%
   .body
+    text-align center
     width 100%
     height 100%
 
-    #compromise
-      width 100%
-      height 100%
+    .panel
+      display inline-block
+
+      &.left
+        width 200px
+        height 400px
+        background-color #f00
+
+      &.center
+        width 600px
+        height 530px 
+
+        #compromise
+          width 500px
+          height 463px
+
+        .left-input
+          width 50%
+          display inline-block
+          text-align left
+
+        .right-input
+          width 50%
+          display inline-block
+          text-align right
+
+      &.right
+        width 200px
+        height 400px
+        background-color #0f0
 
   .footer
     position absolute
