@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies
  */
@@ -52,8 +51,8 @@ if (app.get('env') === 'production') {
  passport.use('imgur', new OAuth2Strategy({
     authorizationURL: 'https://www.imgur.com/oauth2/authorize',
     tokenURL: 'https://www.imgur.com/oauth2/token',
-    clientID: '88eb9cde8b08dcf',
-    clientSecret: '42290f1f7eb656eac4422e025342bde50a4c7d87',
+    clientID: '***',
+    clientSecret: '***',
     callbackURL: 'http://107.170.255.163/auth/imgur/callback'
   },
   function(accessToken, refreshToken, profile, done) {
@@ -107,7 +106,7 @@ app.post('/generate', function (req, res) {
         path: '/3/image',
         method: 'POST',
         headers: {
-            'Authorization': 'Client-ID '+ '88eb9cde8b08dcf',
+            'Authorization': 'Client-ID '+ '***',
             'Content-Length': buf.length
         }
     };
