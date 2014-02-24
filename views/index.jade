@@ -2,9 +2,18 @@ extends layout
 
 block body
   div.body(ng-controller='canvasController')
-    {{test}}
-    div(ng-click="debug()") Debug
-    input#top(type="text" ng-model="triangle.topText")
-    input#left(type="text" ng-model="triangle.leftText")
-    input#right(type="text" ng-model="triangle.rightText")
-    canvas#compromise
+    div.panel.left
+    div.compromise-container.panel.center
+      input#top(type="text" ng-model="triangle.topText")
+      canvas#compromise(width="500" height="463")
+      div.left-input
+        input#left(type="text" ng-model="triangle.leftText")
+      div.right-input
+        input#right(type="text" ng-model="triangle.rightText")  
+    div.panel.right
+
+    div.url-generator
+      button.url-button(ng-click="generate(triangle.topText, triangle.leftText, triangle.rightText)") Generate URL
+      input.url-return(ng-model="imageURL")
+    div.share
+      div share on facebook and stuff
