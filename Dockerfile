@@ -17,7 +17,7 @@ RUN apt-get install -y libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev bui
 RUN mkdir /var/deploy
 ADD . /var/deploy
 
-RUN cd /var/deploy; npm install
+RUN cd /var/deploy; npm install --production
 
 EXPOSE 3000
 
