@@ -1,6 +1,7 @@
 /**
  * Module dependencies
  */
+var util = require('util');
 
 var express = require('express'),
   passport = require('passport'),
@@ -13,7 +14,12 @@ var express = require('express'),
   path = require('path'),
   fs = require('fs');
 
-var util = require('util');
+require('coffee-script')
+var renderer = require('./assets/js/renderer.coffee')
+
+var keys = require('./keys.json');
+console.log(util.inspect(keys));
+
 
 var app = module.exports = express();
 
@@ -51,8 +57,8 @@ if (app.get('env') === 'production') {
  passport.use('imgur', new OAuth2Strategy({
     authorizationURL: 'https://www.imgur.com/oauth2/authorize',
     tokenURL: 'https://www.imgur.com/oauth2/token',
-    clientID: '***',
-    clientSecret: '***',
+    clientID: keys.clientID,
+    clientSecret: keys.clientSecret,
     callbackURL: 'http://107.170.255.163/auth/imgur/callback'
   },
   function(accessToken, refreshToken, profile, done) {
@@ -74,28 +80,47 @@ app.get('/auth/imgur/callback', passport.authenticate('imgur', { successRedirect
 // JSON API
 // app.get('/api/name', api.name);
 
-app.post('/generate', function (req, res) {
+app.post('/generate', function (req, postResponse) {
   console.log(req.body);
 
-  var canvas = new Canvas(150, 150)
+  var canvas = new Canvas(500, 463)
   , ctx = canvas.getContext('2d');
+
+  var triangle = {
+    title: req.body.title,
+    topText: req.body.top,
+    leftText: req.body.left,
+    rightText: req.body.right,
+    coords: {
+      top: {
+        x: 3,
+        y: 0
+      },
+      left: {
+        x: 0,
+        y: 5.2
+      },
+      right: {
+        x: 6,
+        y: 5.2
+      },
+      center: {
+        x: 3,
+        y: 3.5
+      }
+    },
+    transforms: {
+      scale: 50,
+      position: {
+        x: 90,
+        y: 70
+      },
+      textOffset: 10,
+      fontSize: 18
+    }
+  }
  
-  ctx.fillRect(0,0,150,150);   // Draw a rectangle with default settings
-  ctx.save();                  // Save the default state
-   
-  ctx.fillStyle = '#09F'       // Make changes to the settings
-  ctx.fillRect(15,15,120,120); // Draw a rectangle with new settings
-   
-  ctx.save();                  // Save the current state
-  ctx.fillStyle = '#FFF'       // Make changes to the settings
-  ctx.globalAlpha = 0.5;    
-  ctx.fillRect(30,30,90,90);   // Draw a rectangle with new settings
-   
-  ctx.restore();               // Restore previous state
-  ctx.fillRect(45,45,60,60);   // Draw a rectangle with restored settings
-   
-  ctx.restore();               // Restore original state
-  ctx.fillRect(60,60,30,30);   // Draw a rectangle with restored settings
+  renderer.render(canvas, ctx, triangle);
   
   canvas.toBuffer(function(err, buf){
     
@@ -106,7 +131,7 @@ app.post('/generate', function (req, res) {
         path: '/3/image',
         method: 'POST',
         headers: {
-            'Authorization': 'Client-ID '+ '***',
+            'Authorization': 'Client-ID '+ keys.clientID,
             'Content-Length': buf.length
         }
     };
@@ -118,6 +143,7 @@ app.post('/generate', function (req, res) {
         res.setEncoding('utf8');
         res.on('data', function (chunk) {
             console.log('Response: ' + chunk);
+            postResponse.send(chunk);
         });
     });
 
