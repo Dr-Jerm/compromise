@@ -4,16 +4,19 @@ block body
   div.body(ng-controller='canvasController')
     div.panel.left
     div.compromise-container.panel.center
+      input#title(type="text" ng-model="triangle.title")
+      br
       input#top(type="text" ng-model="triangle.topText")
       canvas#compromise(width="500" height="463")
       div.left-input
         input#left(type="text" ng-model="triangle.leftText")
       div.right-input
-        input#right(type="text" ng-model="triangle.rightText")  
+        input#right(type="text" ng-model="triangle.rightText")
+      br
+      div.url-generator
+        button.url-button(ng-click="generate(triangle.title, triangle.topText, triangle.leftText, triangle.rightText)") Generate URL
+        input.url-return(ng-model="imageURL")
     div.panel.right
 
-    div.url-generator
-      button.url-button(ng-click="generate(triangle.topText, triangle.leftText, triangle.rightText)") Generate URL
-      input.url-return(ng-model="imageURL")
     div.share
       div share on facebook and stuff

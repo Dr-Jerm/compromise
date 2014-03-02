@@ -8,11 +8,10 @@ html(ng-app="compromise")
     != js('vendor/angular.min')
     //- script(src="/js/vendor/angular.min.js")
     != js('app')
+    != js('renderer')
     != js('directives')
     
   body
-    include header
-    
     block body
 
     include footer
