@@ -61,7 +61,7 @@ global.render = (canvas, context, triangle) ->
 
     context.fillStyle = '#aaa'
     context.textAlign = 'right'
-    context.fillText "compromiseSucks.com", 495, 458
+    context.fillText "pickTwoTriangle.com", 495, 458
 
   wrapText = (text, x, y, maxWidth, lineHeight) ->
     words = text.split ' '
