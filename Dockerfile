@@ -1,24 +1,24 @@
 # DOCKER_VERSION 0.8.0
 
-FROM ubuntu
+FROM ubuntu:13.10
 
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise universe" >> /etc/apt/sources.list
-RUN apt-get update
-RUN apt-get install -y python-software-properties python g++ make
-RUN add-apt-repository ppa:chris-lea/node.js
-RUN apt-get update
-RUN apt-get install -y nodejs
-
-#RUN apt-get update 
-#RUN apt-get install -y nodejs
-# RUN apt-get install -y git
+# Install cario for node canvas
+RUN apt-get update 
 RUN apt-get install -y libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
 
+# Install nodejs
+RUN apt-get install -y -q software-properties-common
+RUN add-apt-repository -y ppa:chris-lea/node.js
+RUN apt-get -y update
+RUN apt-get install -y -q nodejs
+
+# Move files into the container
 RUN mkdir /var/deploy
 ADD . /var/deploy
 
-RUN cd /var/deploy; npm install --production
+# Install npm dependencies
+RUN cd /var/deploy; /usr/bin/npm install --production
 
+# Start the server
 EXPOSE 3000
-
-CMD ["/usr/bin/node", "/var/deploy/server.js"]
+CMD cd /var/deploy && node server.js
