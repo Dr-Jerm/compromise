@@ -14,15 +14,12 @@ var express = require('express'),
   path = require('path'),
   fs = require('fs');
 
-require('coffee-script')
-var renderer = require('./assets/js/renderer.coffee')
+require('coffee-script');
+var renderer = require('./assets/js/renderer.coffee');
 
 var keys = require('./keys.json');
-console.log(util.inspect(keys));
-
 
 var app = module.exports = express();
-
 
 /**
  * Configuration
@@ -35,10 +32,7 @@ app.set('view engine', 'jade');
 app.use(express.logger('dev'));
 app.use(require("connect-assets")());
 app.use(express.json());
-// app.use(express.bodyParser());
-// app.use(express.methodOverride());
 app.use(express.static(path.join(__dirname, 'assets')));
-// app.use(app.router);
 
 // development only
 if (app.get('env') === 'development') {
@@ -73,8 +67,6 @@ if (app.get('env') === 'production') {
 
 // serve index and view partials
 app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
-
 app.get('/auth/imgur/callback', passport.authenticate('imgur', { successRedirect: '/', failureRedirect: '/' }));
 
 // JSON API
@@ -152,19 +144,7 @@ app.post('/generate', function (req, postResponse) {
     post_req.end();
 
   });
-
-  // var out = fs.createWriteStream(__dirname + '/state.png')
-  //   , stream = canvas.createPNGStream();
-   
-  // stream.on('data', function(chunk){
-  //   out.write(chunk);
-  // });
 });
-
-
-// redirect all others to the index (HTML5 history)
-// app.get('*', routes.index);
-
 
 /**
  * Start Server
