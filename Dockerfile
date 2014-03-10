@@ -1,7 +1,6 @@
 #run ex;
 # sudo docker run -d -p 3001:3000 -link mongo-compromise:db drjerm/ubuntu-compromise
 
-
 # DOCKER_VERSION 0.8.0
 
 FROM ubuntu:13.10
