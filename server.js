@@ -3,6 +3,8 @@
  */
 var util = require('util');
 
+require('coffee-script');
+
 var express = require('express'),
   passport = require('passport'),
   OAuth2Strategy = require('passport-imgur').Strategy,
@@ -13,10 +15,16 @@ var express = require('express'),
   path = require('path'),
   fs = require('fs');
 
-require('coffee-script');
+var keys = require('./keys.json');
 var renderer = require('./assets/js/renderer.coffee');
 
-var keys = require('./keys.json');
+var dbRegex = /tcp:\/\/(.\S*):(.\S*)/;
+var dbAddress = dbRegex.exec(process.env.DB_PORT);
+var database = "compromise";
+var monkConnect = dbAddress[1]+":"+dbAddress[2]+"/"+database;
+console.log(monkConnect);
+var db = require('monk')(monkConnect);
+
 
 var app = module.exports = express();
 
@@ -74,14 +82,49 @@ app.get('/auth/imgur/callback', passport.authenticate('imgur', { successRedirect
 app.post('/generate', function (req, postResponse) {
   console.log(req.body);
 
+  var userTriangle = {
+    title: req.body.title,
+    top: req.body.top,
+    left: req.body.left,
+    right: req.body.right
+  };
+
+  var hashes = db.get('hashes');
+
+  var existingHash = hashes.findOne(userTriangle);
+  existingHash.on('success', function (doc) {
+    console.log(util.inspect(doc));
+    if (doc){
+      var responseObj = {data: {link: doc.link}};
+      postResponse.send(responseObj);
+    } else {
+      generateDoc(userTriangle, postResponse);
+    }
+  });
+  existingHash.on('error', function (message) {
+    console.log(message);
+  });
+});
+
+/**
+ * Start Server
+ */
+
+http.createServer(app).listen(app.get('port'), function () {
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
+
+var generateDoc = function (userTriangle, postResponse) {
+  var hashes = db.get('hashes');
   var canvas = new Canvas(500, 463)
   , ctx = canvas.getContext('2d');
 
   var triangle = {
-    title: req.body.title,
-    topText: req.body.top,
-    leftText: req.body.left,
-    rightText: req.body.right,
+    title: userTriangle.title,
+    topText: userTriangle.top,
+    leftText: userTriangle.left,
+    rightText: userTriangle.right,
     coords: {
       top: {
         x: 3,
@@ -132,9 +175,22 @@ app.post('/generate', function (req, postResponse) {
     var post_req = https.request(post_options, function(res) {
         console.log('got response')
         res.setEncoding('utf8');
+
+        var output = '';
         res.on('data', function (chunk) {
-            console.log('Response: ' + chunk);
-            postResponse.send(chunk);
+            output += chunk;
+        });
+
+        res.on('end', function() {
+          var obj = JSON.parse(output);
+          console.log('Response: ' + output);
+          userTriangle.link = obj.data.link;
+          hashes.insert(userTriangle, function (error, doc) {
+            if (error) {
+              console.log(error);
+            }
+          });
+          postResponse.send(output);
         });
     });
 
@@ -143,12 +199,4 @@ app.post('/generate', function (req, postResponse) {
     post_req.end();
 
   });
-});
-
-/**
- * Start Server
- */
-
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
-});
+}
