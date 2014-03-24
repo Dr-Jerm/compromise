@@ -1,4 +1,3 @@
-angularTicker
-=============
+Compromise sucks. Not having a meme generator to show it does too. I pose a solution to the generator issue.
 
-RESTful stock ticker using node.js and angular.js
+Live at picktwotriangle.com
