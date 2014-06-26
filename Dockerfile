@@ -1,9 +1,11 @@
 #run ex;
 # sudo docker run -d -p 3001:3000 -link mongo-compromise:db drjerm/ubuntu-compromise
 
-# DOCKER_VERSION 0.8.0
+# DOCKER_VERSION 1.0.0
 
-FROM ubuntu:13.10
+FROM ubuntu:latest
+
+MAINTAINER Jeremy R Bernstein <utilityjerm@gmail.com>
 
 # Install cario for node canvas
 RUN apt-get update 
